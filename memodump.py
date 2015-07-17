@@ -275,7 +275,7 @@ class Theme(ThemeBase):
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="%(prefix)s/%(theme)s/js/bootstrap.min.js"></script>
   <!-- toggle.js by dossist -->
-  <script src="%(prefix)s/%(theme)s/js/toggle.js"></script>
+  <!-- script src="%(prefix)s/%(theme)s/js/toggle.js"></script -->
   <!-- Custom script -->
 %(script)s
   <!-- End of JavaScript -->
@@ -349,6 +349,24 @@ class Theme(ThemeBase):
       $('#pagebox a[href^="#"]:not([href="#"])').on("click", mdAnchorFix.clickWrapper);
       $(window).on("hashchange", mdAnchorFix.jump);
       if (location.hash) setTimeout(function () { mdAnchorFix.jump(); }, 100);
+
+      $(".global-comment").click(function(){
+        $this = $(this);
+        if ($this.hasClass('on')) {
+          $this.removeClass('on');
+          $(".current-comment.on").click();
+        } else {
+          $this.addClass('on');
+          $(".current-comment:not(.on)").click();
+        };
+      });
+
+      $(".comment").before('<a rel="nofollow" class="menu-nav-comment nbcomment current-comment"></a>');
+      $(".current-comment").click(function(){
+        $this = $(this);
+        $this.next().toggle();
+        $this.hasClass('on') ? $this.removeClass('on') : $this.addClass('on');
+      });
     }(jQuery);
   </script>
 """
@@ -515,7 +533,7 @@ class Theme(ThemeBase):
         _ = self.request.getText
         html = u'''
             <li class="toggleCommentsButton navbar-comment-toggle" style="display:none;">
-              <a href="#" class="menu-nav-comment nbcomment navbar-comment-toggle" rel="nofollow" onClick="toggleComments();return false;" data-toggle="toggle" data-target=".navbar-comment-toggle">
+              <a class="menu-nav-comment nbcomment navbar-comment-toggle global-comment" rel="nofollow">
                 <span class="hidden-sm">%s</span>
               </a>
             </li>

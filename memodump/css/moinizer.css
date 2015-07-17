@@ -209,6 +209,7 @@ strong.highlight {
 .comment { /* .comment must be on top of other color box classes */
 	color: #999;
 	background-color: #f0f0ff;
+	padding: 0;
 }
 .red { /* Bootstrap .alert-danger */
     background-color: #f2dede;
